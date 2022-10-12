@@ -152,6 +152,20 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    rlt = min(word_list, key = lambda w1: diff_function(typed_word, w1, limit))
+        
+    if typed_word in word_list or diff_function(typed_word, rlt, limit) > limit:
+        return typed_word
+    return rlt
+    # rec_limit = limit + 1
+    # rlt = typed_word
+    # for word in word_list:
+    #     diff_val = diff_function(typed_word, word, limit)
+    #     print("DEBUG:", diff_val)
+    #     if diff_val < rec_limit:
+    #         rec_limit = diff_val
+    #         rlt = word
+    # return rlt
     # END PROBLEM 5
 
 
@@ -178,7 +192,22 @@ def sphinx_swaps(start, goal, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    # assert False, 'Remove this line'
+    if len(start) == 0 or len(goal) == 0:
+        return max(len(start), len(goal)) if max(len(start), len(goal)) <= limit else limit + 1
+    if start[0] != goal[0]:
+        if not limit:
+            return 1
+        return sphinx_swaps(start[1:], goal[1:], limit - 1) + 1
+    else:
+        return sphinx_swaps(start[1:], goal[1:], limit)
+#    def sphinx_calc(start, goal):
+#        if len(start) == 0 or len(goal) == 0:
+#            return max(len(start), len(goal))
+#        if start[0] != goal[0]:
+#            return sphinx_calc(start[1:], goal[1:0]) + 1
+#        else:
+#            return sphinx_calc(start[1:], goal[1:0])
     # END PROBLEM 6
 
 
@@ -199,24 +228,30 @@ def minimum_mewtations(start, goal, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
-
-    if ______________:  # Fill in the condition
+    # assert False, 'Remove this line'
+    if limit < 0:  # Fill in the condition
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return 0
         # END
 
-    elif ___________:  # Feel free to remove or add additional cases
+    elif start == goal:  # Feel free to remove or add additional cases
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return 0
         # END
+    elif len(start) == 0 or len(goal) == 0:
+        return max(len(start), len(goal))
+    elif start[0] == goal[0]:
+        return minimum_mewtations(start[1:], goal[1:], limit)
 
     else:
-        add = ...  # Fill in these lines
-        remove = ...
-        substitute = ...
+        add = minimum_mewtations(start, goal[1:], limit - 1) + 1  # Fill in these lines
+        remove = minimum_mewtations(start[1:], goal, limit - 1) + 1
+        substitute = minimum_mewtations(start[1:], goal[1:], limit - 1) + 1
         # BEGIN
         "*** YOUR CODE HERE ***"
+        return min(add, remove, substitute)
         # END
 
 
@@ -224,6 +259,8 @@ def final_diff(start, goal, limit):
     """A diff function that takes in a string START, a string GOAL, and a number LIMIT.
     If you implement this function, it will be used."""
     assert False, 'Remove this line to use your final_diff function.'
+    slen = len(start)
+    glen = len(goal)
 
 
 FINAL_DIFF_LIMIT = 6  # REPLACE THIS WITH YOUR LIMIT
@@ -259,6 +296,15 @@ def report_progress(sofar, prompt, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    sofar_len = len(sofar)
+    prompt_len = len(prompt)
+    times = 0
+    for i in range(min(sofar_len, prompt_len)):
+        if sofar[i] != prompt[i]:
+            break
+        times += 1
+    upload({"id": user_id, "progress": times / prompt_len})
+    return times / prompt_len
     # END PROBLEM 8
 
 
@@ -281,6 +327,13 @@ def time_per_word(words, times_per_player):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    timestamps = []
+    for idx, time_list in enumerate(times_per_player):
+        tlen = len(time_list)
+        timestamps.append([])
+        for i in range(tlen - 1):
+            timestamps[idx].append(time_list[i + 1] - time_list[i])
+    return match(words, timestamps)
     # END PROBLEM 9
 
 
@@ -303,6 +356,19 @@ def fastest_words(match):
     word_indices = range(len(match["words"]))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    fastest_words_list = []
+    for i in player_indices:
+        fastest_words_list.append([])
+    for word_idx in word_indices:
+        min_player = 0
+        min_times = time(match, 0, word_idx)
+        for player_idx in player_indices:
+            if min_times > time(match, player_idx, word_idx):
+                min_times = time(match, player_idx, word_idx)
+                min_player = player_idx
+        fastest_words_list[min_player].append(word_at(match, word_idx))
+    return fastest_words_list
+            
     # END PROBLEM 10
 
 
