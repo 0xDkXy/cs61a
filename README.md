@@ -1,5 +1,7 @@
 # CS61A Labs, Homeworks & Projects
 
+It's a repository for the self-learning of the course CS61A
+
 [CS61A 2022 spring](https://inst.eecs.berkeley.edu/~cs61c/sp22/)
 
 ## Tips:
