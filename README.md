@@ -2,7 +2,7 @@
 
 It's a repository for the self-learning of the course CS61A
 
-[CS61A 2022 spring](https://inst.eecs.berkeley.edu/~cs61c/sp22/)
+[CS61A 2022 spring](https://inst.eecs.berkeley.edu/~cs61a/sp22/)
 
 ## Tips:
   - **The `gui_file` directory in the projects lost, I have no idea why git cannot trace the `gui_file`
